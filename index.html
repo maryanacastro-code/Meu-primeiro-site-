@@ -1,11 +1,678 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Galeria Infantil · 50 atividades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9eec1 0%, #f6d5b3 100%);
+            font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard', cursive, sans-serif;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+
+        /* cabeçalho divertido */
+        .cabecalho {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .cabecalho h1 {
+            font-size: 2.8rem;
+            color: #2d4a7c;
+            text-shadow: 4px 4px 0 #fccc6e;
+            letter-spacing: 2px;
+            word-break: break-word;
+        }
+
+        .cabecalho p {
+            font-size: 1.4rem;
+            background: #fff6d9;
+            display: inline-block;
+            padding: 0.6rem 2rem;
+            border-radius: 60px;
+            box-shadow: 0 8px 0 #bb8f63;
+            color: #3f2b1a;
+            font-weight: bold;
+            margin-top: 0.8rem;
+        }
+
+        .cabecalho p span {
+            background: #ffb347;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        /* GRADE – exatamente 50 espaços */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);  /* 5 colunas = 10 linhas (5x10 = 50) */
+            gap: 1.2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* cada card = moldura colorida */
+        .card-atividade {
+            background-color: #fffef7;
+            border-radius: 32px 32px 24px 24px;
+            box-shadow: 0 12px 0 #b3a0cd, 0 8px 15px rgba(0,0,0,0.2);
+            padding: 0.8rem 0.8rem 1rem 0.8rem;
+            transition: transform 0.15s ease, box-shadow 0.2s;
+            border: 3px solid #fbbb2d;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-atividade:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 0 #8a78b0, 0 14px 20px rgba(0,0,0,0.25);
+        }
+
+        /* área da imagem */
+        .imagem-placeholder {
+            background-color: #e1d8f0;
+            border-radius: 24px 24px 16px 16px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;  /* quadradinho fofo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed #ff8a7a;
+            transition: background 0.2s;
+        }
+
+        .imagem-placeholder:hover {
+            background-color: #f5d0c5;
+        }
+
+        /* tag img – sempre visível como lembrete */
+        .imagem-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;      /* preenche o espaço sem distorcer */
+            display: block;
+            border-radius: 20px 20px 12px 12px;
+            border: 2px solid white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: #ffe2bf; /* cor de fundo enquanto não há imagem */
+        }
+
+        /* texto de apoio com a tag <img> visível (formato de exemplo) */
+        .codigo-exemplo {
+            background: #f3e5d3;
+            margin-top: 0.7rem;
+            padding: 0.5rem 0.3rem;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            border: 2px solid #cfb284;
+            color: #2c3e4e;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .codigo-exemplo span {
+            background: #fcd9b8;
+            padding: 2px 6px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #a64b2a;
+        }
+
+        /* etiqueta do número da atividade */
+        .numero-atividade {
+            display: inline-block;
+            background: #fddd7e;
+            border-radius: 50px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+            border: 2px solid #f39c12;
+            color: #3c2f1b;
+            box-shadow: 0 3px 0 #c1821e;
+        }
+
+        /* responsividade: se a tela for pequena, ajusta colunas */
+        @media (max-width: 800px) {
+            .galeria-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .cabecalho h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .galeria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* rodapé brincante */
+        .rodape {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 1.2rem;
+            color: #442f1e;
+            background: #fdebb3;
+            padding: 1rem;
+            border-radius: 100px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 4px dotted #ea9a2a;
+        }
+
+        .rodape a {
+            text-decoration: none;
+            background: #ffb958;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            color: black;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .rodape a:hover {
+            background: #ffa01c;
+        }
+    </style>
 </head>
 <body>
-   Eu não sei o que estou fazendo  
+
+    <div class="cabecalho">
+        <h1>🧸 50 ATIVIDADES INFANTIS 🎨</h1>
+        <p>espaços prontos com <span>&lt;img src=&quot;link&quot;&gt;</span></p>
+    </div>
+
+    <!-- grade com 50 cards (5 colunas x 10 linhas) -->
+    <div class="galeria-grid">
+        <!-- os 50 cards são gerados manualmente com numeração única e exemplos de tag -->
+        <!-- cada card tem a estrutura: número, placeholder da img com a tag <img src="#"> e o código de exemplo -->
+        
+        <!-- 1 a 10 -->
+        <div class="card-atividade">
+            <span class="numero-atividade">#01</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFB6C1/000000?text=brincar" alt="atividade infantil 01">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑01"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#02</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FADADD/2d4a7c?text=pintura" alt="atividade infantil 02">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑02"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#03</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/C1E1C1/2c3e50?text=lego" alt="atividade infantil 03">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑03"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#04</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFDAB9/8b4513?text=desenho" alt="atividade infantil 04">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑04"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#05</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/E6E6FA/4b0082?text=quebra-cabeça" alt="atividade infantil 05">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑05"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#06</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFE4E1/708090?text=blocos" alt="atividade infantil 06">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑06"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#07</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFDEAD/800020?text=massa+de+modelar" alt="atividade infantil 07">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑07"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#08</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/D8BFD8/2f4f4f?text=história" alt="atividade infantil 08">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑08"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#09</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFFACD/8b0000?text=música" alt="atividade infantil 09">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑09"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#10</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/F0E68C/191970?text=teatro" alt="atividade infantil 10">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑10"&gt;</span>
+            </div>
+        </div>
+
+        <!-- 11 a 20 -->
+        <div class="card-atividade">
+            <span class="numero-atividade">#11</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/E0FFFF/4b6c6e?text=bolhas" alt="atividade infantil 11">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑11"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#12</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FAF0E6/7a4e4e?text=areia" alt="atividade infantil 12">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑12"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#13</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFEBCD/228b22?text=plantar" alt="atividade infantil 13">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑13"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#14</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/DDA0DD/483d8b?text=origami" alt="atividade infantil 14">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑14"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#15</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/B0E0E6/8b4513?text=dança" alt="atividade infantil 15">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑15"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#16</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFC0CB/2e4e5e?text=fantoches" alt="atividade infantil 16">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑16"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#17</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFD700/8b0000?text=colagem" alt="atividade infantil 17">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑17"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#18</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/98FB98/104e8b?text=esconde-esconde" alt="atividade infantil 18">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑18"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#19</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/BC8F8F/2f1e1e?text=bolinha+de+sabão" alt="atividade infantil 19">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑19"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#20</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/ADD8E6/3b2f2f?text=ler+livro" alt="atividade infantil 20">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑20"&gt;</span>
+            </div>
+        </div>
+
+        <!-- 21 a 30 -->
+        <div class="card-atividade">
+            <span class="numero-atividade">#21</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/F4A460/2e3840?text=carrinho" alt="atividade infantil 21">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑21"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#22</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFA07A/274e13?text=boliche" alt="atividade infantil 22">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑22"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#23</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/EEE8AA/4a2c2c?text=pular+corda" alt="atividade infantil 23">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑23"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#24</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/B0C4DE/8b5a2b?text=amarelinha" alt="atividade infantil 24">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑24"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#25</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FA8072/1d3557?text=escorregador" alt="atividade infantil 25">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑25"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#26</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFB347/4b4237?text=balanço" alt="atividade infantil 26">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑26"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#27</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/CCCCFF/3a2c1b?text=pique-pega" alt="atividade infantil 27">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑27"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#28</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/F5DEB3/1f4b3e?text=peteca" alt="atividade infantil 28">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑28"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#29</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/A9A9A9/682a2a?text=avião+de+papel" alt="atividade infantil 29">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑29"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#30</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/D2B48C/1b2631?text=massinha" alt="atividade infantil 30">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑30"&gt;</span>
+            </div>
+        </div>
+
+        <!-- 31 a 40 -->
+        <div class="card-atividade">
+            <span class="numero-atividade">#31</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/E0B0FF/283618?text=desfilar" alt="atividade infantil 31">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑31"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#32</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FF9966/3a2610?text=cozinhar" alt="atividade infantil 32">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑32"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#33</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFCC99/56203d?text=brinquedos" alt="atividade infantil 33">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑33"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#34</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/C0C0C0/2a4747?text=acampamento" alt="atividade infantil 34">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑34"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#35</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/B0B0B0/1e2f4a?text=trenzinho" alt="atividade infantil 35">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑35"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#36</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFB6C1/3d315b?text=balões" alt="atividade infantil 36">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑36"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#37</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFD700/2d4e2d?text=pipa" alt="atividade infantil 37">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑37"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#38</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/9ACD32/2b322b?text=hortinha" alt="atividade infantil 38">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑38"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#39</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FF8C69/2c1810?text=pedrinhas" alt="atividade infantil 39">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑39"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#40</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/8FBC8F/243b4a?text=caça+ao+tesouro" alt="atividade infantil 40">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑40"&gt;</span>
+            </div>
+        </div>
+
+        <!-- 41 a 50 (últimos 10) -->
+        <div class="card-atividade">
+            <span class="numero-atividade">#41</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/DDA0DD/4b1c3f?text=mímica" alt="atividade infantil 41">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑41"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#42</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/B0C4DE/2f4858?text=esportes" alt="atividade infantil 42">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑42"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#43</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FAF0E6/5e3a2b?text=argila" alt="atividade infantil 43">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑43"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#44</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFB3B3/3a2b2b?text=telefone+de+latas" alt="atividade infantil 44">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑44"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#45</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFFFE0/303d4e?text=desenho+no+chão" alt="atividade infantil 45">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑45"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#46</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/D3D3D3/2c3d4f?text=quebra-cabeça" alt="atividade infantil 46">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑46"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#47</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FFA500/203354?text=cama+de+gato" alt="atividade infantil 47">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑47"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#48</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FF7373/432818?text=estátua" alt="atividade infantil 48">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑48"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#49</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/BC8F8F/261c15?text=pião" alt="atividade infantil 49">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑49"&gt;</span>
+            </div>
+        </div>
+        <div class="card-atividade">
+            <span class="numero-atividade">#50</span>
+            <div class="imagem-placeholder">
+                <img src="https://via.placeholder.com/300/FAA0A0/212f45?text=festa+infantil" alt="atividade infantil 50">
+            </div>
+            <div class="codigo-exemplo">
+                <span>&lt;img src="link‑50"&gt;</span>
+            </div>
+        </div>
+        <!-- fim dos 50 cards -->
+    </div>
+
+    <div class="rodape">
+        🎈 50 espaços prontos — é só trocar o <strong>"link"</strong> da imagem!  
+        <br><br>
+        <a href="#">✏️ editar imagens</a>
+    </div>
+
+    <!-- explicação sutil: a tag <img src="link"> aparece em cada card -->
+    <!-- total de 50 tags img com src de exemplo (placehold.co) -->
 </body>
 </html>
